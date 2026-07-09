@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<!-- saved from url=(0231)file:///Users/ultra21c/Library/Application%20Support/Claude/local-agent-mode-sessions/797b64c4-4c19-4c94-ba89-c19cc88122d8/d151c429-0d2c-444f-a52b-6d40ba12112d/local_03d0fdf9-27e4-4e86-850f-9b40a9828f2e/outputs/tmux-cheatsheet.html -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tmux 치트시트 (프린트용)</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --muted:#666; --line:#d8d8d8;
+    --key-bg:#2b2b2b; --key-fg:#fff;
+    --cmd:#0b5; --star:#c0392b;
+    --hl-bg:#fff8e1; --hl-border:#f0c000;
+    --head:#2c3e50;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",Segoe UI,Roboto,sans-serif;
+    color:var(--ink); margin:0; padding:22px 26px; line-height:1.4; font-size:13px;
+  }
+  h1{font-size:20px; margin:0 0 2px; color:var(--head);}
+  .sub{color:var(--muted); font-size:11px; margin-bottom:14px;}
+  .prefix{display:inline-block; background:var(--hl-bg); border:1px solid var(--hl-border);
+    padding:2px 8px; border-radius:5px; font-size:11px; margin-left:8px;}
+
+  .grid{column-count:2; column-gap:20px;}
+  section{break-inside:avoid; margin-bottom:14px; border:1px solid var(--line); border-radius:8px; overflow:hidden;}
+  section.fav{border:2px solid var(--hl-border); background:var(--hl-bg);}
+  h2{font-size:13px; margin:0; padding:6px 10px; background:var(--head); color:#fff; display:flex; align-items:center; gap:6px;}
+  section.fav h2{background:#e6a800;}
+  h2 .tag{font-size:10px; font-weight:normal; opacity:.85; margin-left:auto;}
+
+  table{width:100%; border-collapse:collapse;}
+  td{padding:4px 8px; vertical-align:top; border-top:1px solid #eee;}
+  tr:first-child td{border-top:none;}
+  td.k{white-space:nowrap; width:1%;}
+  td.d{color:#333;}
+
+  kbd{background:var(--key-bg); color:var(--key-fg); border-radius:4px; padding:1px 6px;
+    font-size:11px; font-family:"SF Mono",Menlo,Consolas,monospace; display:inline-block;}
+  code{background:#f1f3f4; border-radius:4px; padding:1px 5px; font-size:11px;
+    font-family:"SF Mono",Menlo,Consolas,monospace; color:#0a5;}
+  .cmd{color:#8e44ad;} /* : 명령 */
+  .plus{color:var(--muted); font-size:10px; padding:0 2px;}
+  em{color:var(--star); font-style:normal; font-weight:600;}
+
+  @media print{
+    body{padding:0; font-size:8.6px; line-height:1.2;}
+    @page{margin:6mm; size:A4;}
+    h1{font-size:15px;}
+    .sub{margin-bottom:6px; font-size:8.5px;}
+    .grid{column-gap:12px;}
+    section{margin-bottom:7px; border-radius:5px;}
+    h2{font-size:10px; padding:3px 7px;}
+    td{padding:1.5px 6px;}
+    kbd{font-size:8.5px; padding:0 4px;}
+    code{font-size:8.5px; padding:0 3px;}
+    kbd,code{border:1px solid #999;}
+    kbd{background:#eee !important; color:#000 !important;}
+    h2{background:#333 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    section.fav h2{background:#666 !important;}
+    section.fav{background:#f5f5f5 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<h1>tmux 치트시트 <span class="prefix">기본 프리픽스 <kbd>Shift</kbd>+<kbd>Space</kbd></span></h1>
+<div class="sub">아래 표기에서 <kbd>Shift</kbd>+<kbd>Space</kbd> 뒤에 나오는 키는 프리픽스를 놓고 이어서 누릅니다. &nbsp;·&nbsp; <code>$</code> = 쉘 명령, <code class="cmd">:</code> = tmux 명령 모드</div>
+
+<div class="grid">
+
+  <!-- 자주 쓰는 -->
+  <section class="fav">
+    <h2>⭐ 자주 쓰는 핵심 <span class="tag">실전 필수</span></h2>
+    <table>
+      <tbody><tr><td class="k"><code>tmux new -s 이름</code></td><td class="d">이름 붙여 새 세션 시작</td></tr>
+      <tr><td class="k"><code>tmux a -t 이름</code></td><td class="d">해당 세션에 다시 접속</td></tr>
+      <tr><td class="k"><code>tmux ls</code></td><td class="d">세션 목록 보기</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>d</kbd></td><td class="d">세션에서 나가기(분리)</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>$</kbd></td><td class="d">세션 이름 바꾸기</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>c</kbd></td><td class="d">윈도우 생성</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>,</kbd></td><td class="d">윈도우 이름 바꾸기</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>&amp;</kbd></td><td class="d">현재 윈도우 닫기</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>%</kbd></td><td class="d">팬 좌우 분할</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>"</kbd></td><td class="d">팬 상하 분할</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>x</kbd></td><td class="d">현재 팬 닫기</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>화살표</kbd></td><td class="d">팬 간 이동</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>z</kbd></td><td class="d">팬 확대/원복 토글</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>0</kbd>–<kbd>9</kbd></td><td class="d">번호로 윈도우 전환</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- 세션 -->
+  <section>
+    <h2>세션 (Session)</h2>
+    <table>
+      <tbody><tr><td class="k"><code>tmux</code> / <code>tmux new</code></td><td class="d">새 세션 시작</td></tr>
+      <tr><td class="k"><code>tmux new -s <em>이름</em></code></td><td class="d">이름 붙여 새 세션 시작</td></tr>
+      <tr><td class="k"><code>tmux new -A -s <em>이름</em></code></td><td class="d">없으면 생성, 있으면 접속</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>$</kbd></td><td class="d">세션 이름 바꾸기</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>d</kbd></td><td class="d">세션에서 분리(detach)</td></tr>
+      <tr><td class="k"><code>tmux ls</code></td><td class="d">세션 목록</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>s</kbd></td><td class="d">모든 세션 표시/선택</td></tr>
+      <tr><td class="k"><code>tmux a</code></td><td class="d">마지막 세션에 접속</td></tr>
+      <tr><td class="k"><code>tmux a -t <em>이름</em></code></td><td class="d">해당 세션에 접속</td></tr>
+      <tr><td class="k"><code class="cmd">: kill-session</code></td><td class="d">현재 세션 종료</td></tr>
+      <tr><td class="k"><code>tmux kill-ses -t <em>이름</em></code></td><td class="d">해당 세션 종료</td></tr>
+      <tr><td class="k"><code>tmux kill-session -a</code></td><td class="d">현재 세션 제외 전부 종료</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>w</kbd></td><td class="d">세션·윈도우 미리보기</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>(</kbd> / <kbd>)</kbd></td><td class="d">이전 / 다음 세션</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- 윈도우 -->
+  <section>
+    <h2>윈도우 (Window)</h2>
+    <table>
+      <tbody><tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>c</kbd></td><td class="d">윈도우 생성</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>,</kbd></td><td class="d">현재 윈도우 이름 바꾸기</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>&amp;</kbd></td><td class="d">현재 윈도우 닫기</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>w</kbd></td><td class="d">윈도우 목록</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>p</kbd> / <kbd>n</kbd></td><td class="d">이전 / 다음 윈도우</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>0</kbd>–<kbd>9</kbd></td><td class="d">번호로 윈도우 전환</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>l</kbd></td><td class="d">마지막 활성 윈도우로</td></tr>
+      <tr><td class="k"><code>tmux new -s <em>세션</em> -n <em>윈도우</em></code></td><td class="d">세션·윈도우 이름 지정 생성</td></tr>
+      <tr><td class="k"><code class="cmd">: swap-window -s 2 -t 1</code></td><td class="d">윈도우 2와 1 위치 교환</td></tr>
+      <tr><td class="k"><code class="cmd">: movew -s 0:9</code></td><td class="d">현재 세션 내 윈도우 위치 변경</td></tr>
+      <tr><td class="k"><code class="cmd">: movew -r</code></td><td class="d">윈도우 번호 빈틈 재정렬</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- 팬 -->
+  <section>
+    <h2>팬 (Pane)</h2>
+    <table>
+      <tbody><tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>%</kbd></td><td class="d">좌우로 분할 (수직선)</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>"</kbd></td><td class="d">상하로 분할 (수평선)</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>화살표</kbd></td><td class="d">해당 방향 팬으로 이동</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>o</kbd></td><td class="d">다음 팬으로</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>;</kbd></td><td class="d">마지막 활성 팬으로</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>q</kbd></td><td class="d">팬 번호 표시</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>z</kbd></td><td class="d">팬 확대/원복 토글</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>Space</kbd></td><td class="d">팬 레이아웃 전환</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>{</kbd> / <kbd>}</kbd></td><td class="d">팬을 왼쪽 / 오른쪽으로 이동</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>Ctrl</kbd>+<kbd>화살표</kbd></td><td class="d">현재 팬 크기 조정</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>!</kbd></td><td class="d">팬을 윈도우로 분리</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>x</kbd></td><td class="d">현재 팬 닫기</td></tr>
+      <tr><td class="k"><code class="cmd">: join-pane -s 2 -t 1</code></td><td class="d">윈도우 2를 1의 팬으로 병합</td></tr>
+      <tr><td class="k"><code class="cmd">: setw synchronize-panes</code></td><td class="d">모든 팬에 동시 입력 토글</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- 복사 모드 -->
+  <section>
+    <h2>복사 모드 (Copy Mode)</h2>
+    <table>
+      <tbody><tr><td class="k"><code class="cmd">: setw -g mode-keys vi</code></td><td class="d">vi 키 사용 설정</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>[</kbd></td><td class="d">복사 모드 진입</td></tr>
+      <tr><td class="k"><kbd>q</kbd></td><td class="d">모드 종료</td></tr>
+      <tr><td class="k"><kbd>g</kbd> / <kbd>G</kbd></td><td class="d">맨 위 / 맨 아래 줄로</td></tr>
+      <tr><td class="k"><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd></td><td class="d">커서 좌·하·상·우 이동</td></tr>
+      <tr><td class="k"><kbd>w</kbd> / <kbd>b</kbd></td><td class="d">단어 단위 앞 / 뒤로</td></tr>
+      <tr><td class="k"><kbd>/</kbd> / <kbd>?</kbd></td><td class="d">앞으로 / 뒤로 검색</td></tr>
+      <tr><td class="k"><kbd>n</kbd> / <kbd>N</kbd></td><td class="d">다음 / 이전 검색 결과</td></tr>
+      <tr><td class="k"><kbd>Space</kbd></td><td class="d">선택 시작</td></tr>
+      <tr><td class="k"><kbd>Enter</kbd></td><td class="d">선택 복사</td></tr>
+      <tr><td class="k"><kbd>Esc</kbd></td><td class="d">선택 지우기</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>]</kbd></td><td class="d">붙여넣기</td></tr>
+      <tr><td class="k"><code class="cmd">: list-buffers</code></td><td class="d">모든 버퍼 표시</td></tr>
+      <tr><td class="k"><code class="cmd">: save-buffer buf.txt</code></td><td class="d">버퍼 내용을 파일로 저장</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- 기타 & 도움말 -->
+  <section>
+    <h2>기타 · 도움말</h2>
+    <table>
+      <tbody><tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>:</kbd></td><td class="d">명령 모드 진입</td></tr>
+      <tr><td class="k"><code class="cmd">: set mouse on</code></td><td class="d">마우스 모드 활성화</td></tr>
+      <tr><td class="k"><code class="cmd">: set -g OPTION</code></td><td class="d">모든 세션에 옵션 설정</td></tr>
+      <tr><td class="k"><code class="cmd">: setw -g OPTION</code></td><td class="d">모든 윈도우에 옵션 설정</td></tr>
+      <tr><td class="k"><code>tmux -V</code></td><td class="d">tmux 버전 표시</td></tr>
+      <tr><td class="k"><kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>?</kbd></td><td class="d">단축키(키 바인딩) 목록</td></tr>
+      <tr><td class="k"><code>tmux info</code></td><td class="d">세션·윈도우·팬 정보 표시</td></tr>
+    </tbody></table>
+  </section>
+
+</div>
+
+
+</body></html>
